@@ -15,7 +15,7 @@ class MoviesPagingSource(
         val position = params.key ?: STARTING_PAGE_INDEX
 
         return try {
-            val response = movieReviewApi.getMovies("picks", "ewIoQuJeXJ8ka9CK4u6n206u7YCKuZUP")
+            val response = movieReviewApi.getMovies()
             val size = response.results.size
             val photos = response.results
 
@@ -23,7 +23,9 @@ class MoviesPagingSource(
                 data = photos,
                 prevKey = if (position == STARTING_PAGE_INDEX) null else position - 1,
                 nextKey = if (photos.size == size) null else position + 1
+//
             )
+
         } catch (exception: IOException) {
             LoadResult.Error(exception)
         } catch (exception: HttpException) {
@@ -34,5 +36,4 @@ class MoviesPagingSource(
     override fun getRefreshKey(state: PagingState<Int, Result>): Int? {
         return state.anchorPosition
     }
-
 }
